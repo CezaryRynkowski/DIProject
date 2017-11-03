@@ -8,6 +8,22 @@
 
 function CallControllerAndRefreshImg(url, data) {
     $.ajax({
+        xhr: function () {
+            var xhr = new window.XMLHttpRequest();
+            xhr.upload.addEventListener("progress", function (evt) {
+                if (evt.lengthComputable) {
+                    var percentComplete = evt.loaded / evt.total;
+                    console.log(percentComplete);
+                }
+            }, false);
+            xhr.addEventListener("progress", function (evt) {
+                if (evt.lengthComputable) {
+                    var percentComplete = evt.loaded / evt.total;
+                    console.log(percentComplete);
+                }
+            }, false);
+            return xhr;
+        },
         url: url,
         type: 'POST',
         data: data,
@@ -42,4 +58,9 @@ $('#invert').click(function () {
 
 $('#grayscale').click(function () {
     CallControllerAndRefreshImg('/DIP/SetGrayscale', null);
+});
+
+$('#brightness').on("change", function () {
+    var value = $(this).val();
+    CallControllerAndRefreshImg('/DIP/SetBrightness?brightness='+value, null);
 });
