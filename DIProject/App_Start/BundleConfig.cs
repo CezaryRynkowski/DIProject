@@ -16,10 +16,10 @@ namespace DIProject
                 .Include("~/Content/Scripts/jquery.validate*"));
 
             bundles.Add(new StyleBundle("~/Content/css")
-                .Include("~/Content/site.css"));
+                .Include("~/Content/site.css", "~/Content/loading.min.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/script").Include(
-                "~/Content/Scripts/app.js"));
+                "~/Content/Scripts/app.js", "~/Content/Scripts/loading.min.js"));
 
             BundleTable.EnableOptimizations = true;
             BundleTable.Bundles.ApplyHashCache();

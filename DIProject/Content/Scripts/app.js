@@ -1,9 +1,9 @@
 ﻿$(document) //TODO dodać spiner albo coś bo przy bardzo dużych zdjęciach mocno zamula
     .ajaxStart(function () {
-        console.log('ajaxStart');
+        window.showLoading({ allowHide: true });
     })
     .ajaxStop(function () {
-        console.log('ajaxStop');
+        window.hideLoading();
     });
 
 function CallControllerAndRefreshImg(url, data) {
