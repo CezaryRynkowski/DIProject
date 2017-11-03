@@ -51,6 +51,7 @@ namespace DIProject.Controllers
 
         private ContentResult ReturnBitmap(Image bitmap)
         {
+            _image = bitmap;
             var imageBytes = ImageToByteArray(bitmap);
             var base64 = ImageBytesToBase64(imageBytes);
             return Content(base64);
