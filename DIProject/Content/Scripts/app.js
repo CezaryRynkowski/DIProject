@@ -6,48 +6,36 @@
         console.log('ajaxStop');
     });
 
+function CallControllerAndRefreshImg(url, data) {
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: data,
+        dataType: 'text',
+        contentType: false,
+        processData: false,
+        success: function (base64) {
+            $('#img').attr('src', 'data:image/png;base64,' + base64);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(xhr.status);
+            alert(xhr.responseText);
+            alert(thrownError);
+        }
+    });
+}
+
 $('#upload').click(function () {
     var $file = document.getElementById('file'),
         $formData = new FormData();
 
     if ($file.files.length > 0) {
-        for (var i = 0; i < $file.files.length; i++) {
+        for (var i = 0; i < $file.files.length; i++)
             $formData.append('file-' + i, $file.files[i]);
-        }
     }
-    $.ajax({
-        url: '/DIP/upload',
-        type: 'POST',
-        data: $formData,
-        dataType: 'text',
-        contentType: false,
-        processData: false,
-        success: function (base64) {
-            $('#img').attr('src', 'data:image/png;base64,' + base64);
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            alert(xhr.status);
-            alert(xhr.responseText);
-            alert(thrownError);
-        }
-    });
+    CallControllerAndRefreshImg('/DIP/upload', $formData);
 });
 
-$('#invert').click(function() {
-    $.ajax({
-        url: '/DIP/invert',
-        type: 'POST',
-        data: null,
-        dataType: 'text',
-        contentType: false,
-        processData: false,
-        success: function (base64) {
-            $('#img').attr('src', 'data:image/png;base64,' + base64);
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            alert(xhr.status);
-            alert(xhr.responseText);
-            alert(thrownError);
-        }
-    });
+$('#invert').click(function () {
+    CallControllerAndRefreshImg('/DIP/invert', null);
 });
