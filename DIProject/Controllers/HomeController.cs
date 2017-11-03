@@ -13,7 +13,7 @@ namespace DIProject.Controllers
 {
     public class DIPController : Controller
     {
-        private Image _image;
+        private static Image _image;
 
         [HttpGet]
         public ActionResult Index()
@@ -39,6 +39,24 @@ namespace DIProject.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.NotFound);
         }
 
+        [HttpPost]
+        public ActionResult Invert()
+        {
+            var tempBitmap = new Bitmap(_image);
+            Bitmap resultBitmap = (Bitmap)tempBitmap.Clone();
+            Color c;
+            for (int i = 0; i < resultBitmap.Width; i++)
+            {
+                for (int j = 0; j < resultBitmap.Height; j++)
+                {
+                    c = resultBitmap.GetPixel(i, j);
+                    resultBitmap.SetPixel(i, j, Color.FromArgb(255 - c.R, 255 - c.G, 255 - c.B));
+                }
+            }
+            var imageBytes = ImageToByteArray(BitmapToImage(resultBitmap));
+            return Content(ImageBytesToBase64(imageBytes));
+        }
+
         private byte[] ImageToByteArray(Image image)
         {
             using (var ms = new MemoryStream())
@@ -51,6 +69,11 @@ namespace DIProject.Controllers
         private string ImageBytesToBase64(byte[] imageBytes)
         {
             return Convert.ToBase64String(imageBytes);
+        }
+
+        private Image BitmapToImage(Bitmap bitmap)
+        {
+            return (Image) bitmap;
         }
     }
 }

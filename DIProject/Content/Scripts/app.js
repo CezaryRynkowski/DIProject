@@ -25,3 +25,22 @@
         }
     });
 });
+
+$('#invert').click(function() {
+    $.ajax({
+        url: '/DIP/invert',
+        type: 'POST',
+        data: null,
+        dataType: 'text',
+        contentType: false,
+        processData: false,
+        success: function (base64) {
+            $('#img').attr('src', 'data:image/png;base64,' + base64);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(xhr.status);
+            alert(xhr.responseText);
+            alert(thrownError);
+        }
+    });
+});
