@@ -39,3 +39,7 @@ $('#upload').click(function () {
 $('#invert').click(function () {
     CallControllerAndRefreshImg('/DIP/invert', null);
 });
+
+$('#grayscale').click(function () {
+    CallControllerAndRefreshImg('/DIP/SetGrayscale', null);
+});
