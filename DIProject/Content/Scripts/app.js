@@ -1,4 +1,12 @@
-﻿$('#upload').click(function () {
+﻿$(document) //TODO dodać spiner albo coś bo przy bardzo dużych zdjęciach mocno zamula
+    .ajaxStart(function () {
+        console.log('ajaxStart');
+    })
+    .ajaxStop(function () {
+        console.log('ajaxStop');
+    });
+
+$('#upload').click(function () {
     var $file = document.getElementById('file'),
         $formData = new FormData();
 
@@ -7,7 +15,6 @@
             $formData.append('file-' + i, $file.files[i]);
         }
     }
-
     $.ajax({
         url: '/DIP/upload',
         type: 'POST',
