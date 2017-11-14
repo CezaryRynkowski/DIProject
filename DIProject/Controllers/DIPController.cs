@@ -65,12 +65,6 @@ namespace DIProject.Controllers
         }
 
         [HttpPost]
-        public ActionResult SetGamma(double red, double green, double blue)
-        {
-            return ReturnBitmap(ImageProcessingService.SetGamma((Bitmap)_image, red, green, blue), false);
-        }
-
-        [HttpPost]
         public ActionResult SetContrast(int contrast)
         {
             return ReturnBitmap(ImageProcessingService.SetContrast((Bitmap)_image, Convert.ToDouble(contrast)), false);

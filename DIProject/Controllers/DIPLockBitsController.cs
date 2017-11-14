@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Net;
 using System.Web.Mvc;
 using DIProject.Helpers;
+using DIProject.Services;
 
 namespace DIProject.Controllers
 {
@@ -54,9 +55,23 @@ namespace DIProject.Controllers
         }
 
         [HttpPost]
-        public ActionResult SetGamma(int brightness)
+        public ActionResult SetContrast(int contrast)
         {
-            return ReturnBitmap(ImageProcessingWithBitLocksService.SetGamma((Bitmap)_image, Convert.ToDouble(brightness)), false);
+            return ReturnBitmap(ImageProcessingWithBitLocksService.SetContrast((Bitmap)_image, Convert.ToDouble(contrast)), false);
+        }
+
+        [HttpPost]
+        public ActionResult Resize(int newWidth, int newHeight)
+        {
+            return ReturnBitmap(ImageProcessingWithBitLocksService.Resize((Bitmap)_image, newWidth, newHeight), false);
+        }
+
+        [HttpPost]
+        public ActionResult RotateFlip(string rotateFlip)
+        {
+            RotateFlipType rotateFlipType;
+            Enum.TryParse(rotateFlip, true, out rotateFlipType);
+            return ReturnBitmap(ImageProcessingService.RotateFlip((Bitmap)_image, rotateFlipType), false);
         }
 
         private ContentResult ReturnBitmap(Image bitmap, bool overrideCurrentImage)
