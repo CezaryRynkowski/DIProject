@@ -3,6 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Web.Mvc;
+using DIProject.Helpers;
 using DIProject.Models;
 using DIProject.Services;
 
@@ -16,6 +17,7 @@ namespace DIProject.Controllers
         [HttpGet]
         public ActionResult Index()
         {
+            ViewBag.type = "setpixels";
             return View();
         }
 
@@ -30,8 +32,8 @@ namespace DIProject.Controllers
                     if (httpPostedFileBase != null)
                         _image = Image.FromStream(httpPostedFileBase.InputStream, true, true);
                 }
-                var imageBytes = ImageToByteArray(_image);
-                return Content(ImageBytesToBase64(imageBytes));
+                var imageBytes = ImageHelper.ImageToByteArray(_image);
+                return Content(ImageHelper.ImageBytesToBase64(imageBytes));
             }
             return new HttpStatusCodeResult(HttpStatusCode.NotFound);
         }
@@ -59,7 +61,7 @@ namespace DIProject.Controllers
         {
             ColorFilterTypes colorFilterType;
             Enum.TryParse(colorFilter, true, out colorFilterType);
-            return colorFilterType == ColorFilterTypes.None ? Content(ImageBytesToBase64(ImageToByteArray(_image))) : ReturnBitmap(ImageProcessingService.SetColorFilter((Bitmap)_image, colorFilterType), false);
+            return colorFilterType == ColorFilterTypes.None ? Content(ImageHelper.ImageBytesToBase64(ImageHelper.ImageToByteArray(_image))) : ReturnBitmap(ImageProcessingService.SetColorFilter((Bitmap)_image, colorFilterType), false);
         }
 
         [HttpPost]
@@ -92,23 +94,11 @@ namespace DIProject.Controllers
         {
             if (overrideCurrentImage)
                 _image = bitmap;
-            var imageBytes = ImageToByteArray(bitmap);
-            var base64 = ImageBytesToBase64(imageBytes);
+            var imageBytes = ImageHelper.ImageToByteArray(bitmap);
+            var base64 = ImageHelper.ImageBytesToBase64(imageBytes);
             return Content(base64);
         }
 
-        private static byte[] ImageToByteArray(Image image)
-        {
-            using (var ms = new MemoryStream())
-            {
-                image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-                return ms.ToArray();
-            }
-        }
 
-        private static string ImageBytesToBase64(byte[] imageBytes)
-        {
-            return Convert.ToBase64String(imageBytes);
-        }
     }
 }

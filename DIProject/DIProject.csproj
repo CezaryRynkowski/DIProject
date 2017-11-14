@@ -137,6 +137,9 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\DIPController.cs" />
+    <Compile Include="Controllers\DIPLockBitsController.cs" />
+    <Compile Include="Helpers\ImageHelper.cs" />
+    <Compile Include="Services\ImageProcessingWithBitLocksService.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -177,10 +180,11 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\DIP\Index.cshtml" />
+    <Content Include="Views\Shared\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\DIP\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

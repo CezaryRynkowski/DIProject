@@ -6,7 +6,14 @@
         window.hideLoading();
     });
 
-function CallControllerAndRefreshImg(url, data) {
+function CallControllerAndRefreshImg(urlRest, data) {
+    var url = '';
+    var type = $('#type').val();
+    if (type == 'setpixels') {
+        url = '/DIP';
+    } else {
+        url = '/DIPLockBits';
+    }
     $.ajax({
         xhr: function () {
             var xhr = new window.XMLHttpRequest();
@@ -24,7 +31,7 @@ function CallControllerAndRefreshImg(url, data) {
             }, false);
             return xhr;
         },
-        url: url,
+        url: url + urlRest,
         type: 'POST',
         data: data,
         dataType: 'text',
@@ -53,39 +60,39 @@ $('#upload').click(function () {
         for (var i = 0; i < $file.files.length; i++)
             $formData.append('file-' + i, $file.files[i]);
     }
-    CallControllerAndRefreshImg('/DIP/upload', $formData);
+    CallControllerAndRefreshImg('/upload', $formData);
 });
 
 $('#invert').click(function () {
-    CallControllerAndRefreshImg('/DIP/invert', null);
+    CallControllerAndRefreshImg('/invert', null);
 });
 
 $('#grayscale').click(function () {
-    CallControllerAndRefreshImg('/DIP/SetGrayscale', null);
+    CallControllerAndRefreshImg('/SetGrayscale', null);
 });
 
 $('#brightness').on("change", function () {
     var value = $(this).val();
-    CallControllerAndRefreshImg('/DIP/SetBrightness?brightness=' + value, null);
+    CallControllerAndRefreshImg('/SetBrightness?brightness=' + value, null);
 });
 
 $('#filter').change(function () {
     var value = $(this).val();
-    CallControllerAndRefreshImg('/DIP/SetColorFilter?colorFilter=' + value, null);
+    CallControllerAndRefreshImg('/SetColorFilter?colorFilter=' + value, null);
 });
 
 $('#contrast').on("change", function () {
     var value = $(this).val();
-    CallControllerAndRefreshImg('/DIP/SetContrast?contrast=' + value, null);
+    CallControllerAndRefreshImg('/SetContrast?contrast=' + value, null);
 });
 
 $('.rotate').click(function () {
     var value = $(this).attr("id");
-    CallControllerAndRefreshImg('/DIP/RotateFlip?rotateFlip=' + value, null);
+    CallControllerAndRefreshImg('/RotateFlip?rotateFlip=' + value, null);
 });
 
 $('#resizeButton').click(function () {
     var width = $('#width').val();
     var height = $('#height').val();
-    CallControllerAndRefreshImg('/DIP/Resize?newWidth=' + width + '&newHeight=' + height, null);
+    CallControllerAndRefreshImg('/Resize?newWidth=' + width + '&newHeight=' + height, null);
 });
