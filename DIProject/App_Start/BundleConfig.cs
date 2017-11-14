@@ -10,7 +10,7 @@ namespace DIProject
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery")
-                .Include("~/Content/Scripts/jquery-{version}.js"));
+                .Include("~/Content/Scripts/jquery-{version}.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval")
                 .Include("~/Content/Scripts/jquery.validate*"));
