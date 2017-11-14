@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "DIProject";
+}
+
+<input type="hidden" id="type" value="@ViewBag.type"/>
+
+<form action="" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" id="file" />
+    <input type="button" name="submit" id="upload" value="Załaduj" />
+</form>
+
+<div class="imageHolder">
+    <img id="img" alt="Nie wybrano pliku"/>
+    <input type="button" name="invert" id="invert" value="Odwróć kolory"/>
+    <input type="button" name="grayscale" id="grayscale" value="Skala szarości"/>
+    
+    <label for="brightness">Jasność</label>
+    <input type="range" name="brightness" id="brightness" min="-255" max="255" step="15"/>
+    
+    <label for="filter">Filter</label>
+    <select name="filter" id="filter">
+        <option value="None">Brak</option>
+        <option value="Red">Czerwony</option>
+        <option value="Green">Zielony</option>
+        <option value="Blue">Niebieski</option>
+    </select>
+    
+    <label for="contrast">Kontrast</label>
+    <input type="range" name="contrast" id="contrast" min="-100" max="100" step="10" />
+    
+    <button id="Rotate90FlipNone" class="rotate">Obrót w prawo</button>
+    <button id="Rotate270FlipNone" class="rotate">Obrót w lewo</button>
+    <button id="Rotate180FlipNone" class="rotate">Obrót o 180 stopni</button>
+    
+    <div name="resize">
+        <p id="currentHeight"></p>
+        <p id="currentWidth"></p>
+        
+        <input type="text" name="width" id="width" value="szerokość"/>
+        <input type="text" name="height" id="height" value="wysokość"/>
+        <input type="button" id="resizeButton" value="Zmień rozmiar"/>
+    </div>
+</div>
