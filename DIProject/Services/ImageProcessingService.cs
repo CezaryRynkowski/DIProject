@@ -9,41 +9,44 @@ namespace DIProject.Services
     {
         public static Bitmap Invert(Bitmap image)
         {
-            for (var i = 0; i < image.Width; i++)
+            var tempImage = image;
+            for (var i = 0; i < tempImage.Width; i++)
             {
-                for (var j = 0; j < image.Height; j++)
+                for (var j = 0; j < tempImage.Height; j++)
                 {
-                    var c = image.GetPixel(i, j);
-                    image.SetPixel(i, j, Color.FromArgb(255 - c.R, 255 - c.G, 255 - c.B));
+                    var c = tempImage.GetPixel(i, j);
+                    tempImage.SetPixel(i, j, Color.FromArgb(255 - c.R, 255 - c.G, 255 - c.B));
                 }
             }
-            return image;
+            return tempImage;
         }
 
         public static Bitmap SetGrayscale(Bitmap image)
         {
-            for (var i = 0; i < image.Width; i++)
+            var tempImage = image;
+            for (var i = 0; i < tempImage.Width; i++)
             {
-                for (var j = 0; j < image.Height; j++)
+                for (var j = 0; j < tempImage.Height; j++)
                 {
-                    var c = image.GetPixel(i, j);
+                    var c = tempImage.GetPixel(i, j);
                     var gray = (byte)(.299 * c.R + .587 * c.G + .114 * c.B);
-                    image.SetPixel(i, j, Color.FromArgb(gray, gray, gray));
+                    tempImage.SetPixel(i, j, Color.FromArgb(gray, gray, gray));
                 }
             }
-            return image;
+            return tempImage;
         }
 
         public static Bitmap SetBrightness(Bitmap image, int brightness)
         {
+            var tempImage = image;
             if (brightness < -255) brightness = -255;
             if (brightness > 255) brightness = 255;
             Color c;
-            for (int i = 0; i < image.Width; i++)
+            for (int i = 0; i < tempImage.Width; i++)
             {
-                for (int j = 0; j < image.Height; j++)
+                for (int j = 0; j < tempImage.Height; j++)
                 {
-                    c = image.GetPixel(i, j);
+                    c = tempImage.GetPixel(i, j);
                     int cR = c.R + brightness;
                     int cG = c.G + brightness;
                     int cB = c.B + brightness;
@@ -57,20 +60,21 @@ namespace DIProject.Services
                     if (cB < 0) cB = 1;
                     if (cB > 255) cB = 255;
 
-                    image.SetPixel(i, j, Color.FromArgb((byte)cR, (byte)cG, (byte)cB));
+                    tempImage.SetPixel(i, j, Color.FromArgb((byte)cR, (byte)cG, (byte)cB));
                 }
             }
-            return image;
+            return tempImage;
         }
 
         public static Bitmap SetColorFilter(Bitmap image, ColorFilterTypes colorFilterType)
         {
+            var tempImage = image;
             Color c;
-            for (int i = 0; i < image.Width; i++)
+            for (int i = 0; i < tempImage.Width; i++)
             {
-                for (int j = 0; j < image.Height; j++)
+                for (int j = 0; j < tempImage.Height; j++)
                 {
-                    c = image.GetPixel(i, j);
+                    c = tempImage.GetPixel(i, j);
                     int nPixelR = 0;
                     int nPixelG = 0;
                     int nPixelB = 0;
@@ -102,51 +106,25 @@ namespace DIProject.Services
                     nPixelB = Math.Max(nPixelB, 0);
                     nPixelB = Math.Min(255, nPixelB);
 
-                    image.SetPixel(i, j, Color.FromArgb((byte)nPixelR, (byte)nPixelG, (byte)nPixelB));
+                    tempImage.SetPixel(i, j, Color.FromArgb((byte)nPixelR, (byte)nPixelG, (byte)nPixelB));
                 }
             }
-            return image;
-        }
-
-        public static Bitmap SetGamma(Bitmap image, double red, double green, double blue)
-        {
-            Color c;
-            byte[] redGamma = CreateGammaArray(red);
-            byte[] greenGamma = CreateGammaArray(green);
-            byte[] blueGamma = CreateGammaArray(blue);
-            for (int i = 0; i < image.Width; i++)
-            {
-                for (int j = 0; j < image.Height; j++)
-                {
-                    c = image.GetPixel(i, j);
-                    image.SetPixel(i, j, Color.FromArgb(redGamma[c.R], greenGamma[c.G], blueGamma[c.B]));
-                }
-            }
-            return image;
-        }
-
-        private static byte[] CreateGammaArray(double color)
-        {
-            byte[] gammaArray = new byte[256];
-            for (int i = 0; i < 256; ++i)
-            {
-                gammaArray[i] = (byte)Math.Min(255, (int)((255.0 * Math.Pow(i / 255.0, 1.0 / color)) + 0.5));
-            }
-            return gammaArray;
+            return tempImage;
         }
 
         public static Bitmap SetContrast(Bitmap image, double contrast)
         {
+            var tempImage = image;
             if (contrast < -100) contrast = -100;
             if (contrast > 100) contrast = 100;
             contrast = (100.0 + contrast) / 100.0;
             contrast *= contrast;
             Color c;
-            for (int i = 0; i < image.Width; i++)
+            for (int i = 0; i < tempImage.Width; i++)
             {
-                for (int j = 0; j < image.Height; j++)
+                for (int j = 0; j < tempImage.Height; j++)
                 {
-                    c = image.GetPixel(i, j);
+                    c = tempImage.GetPixel(i, j);
                     double pR = c.R / 255.0;
                     pR -= 0.5;
                     pR *= contrast;
@@ -171,10 +149,10 @@ namespace DIProject.Services
                     if (pB < 0) pB = 0;
                     if (pB > 255) pB = 255;
 
-                    image.SetPixel(i, j, Color.FromArgb((byte)pR, (byte)pG, (byte)pB));
+                    tempImage.SetPixel(i, j, Color.FromArgb((byte)pR, (byte)pG, (byte)pB));
                 }
             }
-            return image;
+            return tempImage;
         }
 
         public static Bitmap Resize(Bitmap image, int newWidth, int newHeight)
@@ -250,49 +228,6 @@ namespace DIProject.Services
         public static Bitmap RotateFlip(Bitmap image, RotateFlipType rotateFlipType)
         {
             image.RotateFlip(rotateFlipType);
-            return image;
-        }
-
-        public static Bitmap InsertText(Bitmap image, string text, int xPosition, int yPosition, string fontName,
-            float fontSize, string fontStyle, string colorName1, string colorName2)
-        {
-            Graphics gr = Graphics.FromImage(image);
-            if (string.IsNullOrEmpty(fontName))
-                fontName = "Times New Roman";
-            if (fontSize.Equals(null))
-                fontSize = 10.0F;
-            Font font = new Font(fontName, fontSize);
-            if (!string.IsNullOrEmpty(fontStyle))
-            {
-                FontStyle fStyle = FontStyle.Regular;
-                switch (fontStyle.ToLower())
-                {
-                    case "bold":
-                        fStyle = FontStyle.Bold;
-                        break;
-                    case "italic":
-                        fStyle = FontStyle.Italic;
-                        break;
-                    case "underline":
-                        fStyle = FontStyle.Underline;
-                        break;
-                    case "strikeout":
-                        fStyle = FontStyle.Strikeout;
-                        break;
-
-                }
-                font = new Font(fontName, fontSize, fStyle);
-            }
-            if (string.IsNullOrEmpty(colorName1))
-                colorName1 = "Black";
-            if (string.IsNullOrEmpty(colorName2))
-                colorName2 = colorName1;
-            Color color1 = Color.FromName(colorName1);
-            Color color2 = Color.FromName(colorName2);
-            int gW = (int)(text.Length * fontSize);
-            gW = gW == 0 ? 10 : gW;
-            LinearGradientBrush LGBrush = new LinearGradientBrush(new Rectangle(0, 0, gW, (int)fontSize), color1, color2, LinearGradientMode.Vertical);
-            gr.DrawString(text, font, LGBrush, xPosition, yPosition);
             return image;
         }
     }
