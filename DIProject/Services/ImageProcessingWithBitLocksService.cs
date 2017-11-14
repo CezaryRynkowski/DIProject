@@ -129,34 +129,29 @@ namespace DIProject.Controllers
 
         public static Image SetBrightness(Bitmap image, int brightness)
         {
-            var bright = (float)brightness;
-            Rectangle rect = new Rectangle(0, 0, image.Width, image.Height);
-            System.Drawing.Imaging.BitmapData bmpData = image.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite, image.PixelFormat);
-            IntPtr ptr = bmpData.Scan0;
-            int bytes = Math.Abs(bmpData.Stride) * image.Height;
-            byte[] rgbValues = new byte[bytes];
-            System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
-            float correctionFactortemp = bright;
-            if (bright < 0)
-            {
-                correctionFactortemp = 1 + bright;
-            }
-            for (int counter = 1; counter < rgbValues.Length; counter++)
-            {
-                float color = (float)rgbValues[counter];
-                if (bright < 0)
-                {
-                    color *= (int)correctionFactortemp;
-                }
-                else
-                {
-                    color = (255 - color) * bright + color;
-                }
-                rgbValues[counter] = (byte)color;
-            }
-            Marshal.Copy(rgbValues, 0, ptr, bytes);
-            image.UnlockBits(bmpData);
-            return image;
+            Bitmap TempBitmap = image;
+            Bitmap NewBitmap = new Bitmap(TempBitmap.Width, TempBitmap.Height);
+            Graphics NewGraphics = Graphics.FromImage(NewBitmap);
+            float FinalValue = (float)brightness / 255.0f;
+            float[][] FloatColorMatrix ={
+
+                new float[] {1, 0, 0, 0, 0},
+
+                new float[] {0, 1, 0, 0, 0},
+
+                new float[] {0, 0, 1, 0, 0},
+
+                new float[] {0, 0, 0, 1, 0},
+
+                new float[] {FinalValue, FinalValue, FinalValue, 1, 1}
+            };
+            ColorMatrix NewColorMatrix = new ColorMatrix(FloatColorMatrix);
+            ImageAttributes Attributes = new ImageAttributes();
+            Attributes.SetColorMatrix(NewColorMatrix);
+            NewGraphics.DrawImage(TempBitmap, new Rectangle(0, 0, TempBitmap.Width, TempBitmap.Height), 0, 0, TempBitmap.Width, TempBitmap.Height, GraphicsUnit.Pixel, Attributes);
+            Attributes.Dispose();
+            NewGraphics.Dispose();
+            return NewBitmap;
         }
 
         public static Image SetGamma(Bitmap image, double brightness, double c = 1d)
