@@ -18,21 +18,21 @@ namespace DIProject
     {
         protected void Application_Start()
         {
-            ConfigureContainer();
+            //ConfigureContainer();
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
 
-        private void ConfigureContainer()
-        {
-            var container = new Container();
-            container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
-            container.Register<ImageProcessingService>(Lifestyle.Scoped);
-            container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
-            container.Verify();
-            DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(container));
-        }
+        //private void ConfigureContainer()
+        //{
+        //    var container = new Container();
+        //    container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
+        //    container.Register<ImageProcessingService>(Lifestyle.Scoped);
+        //    container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
+        //    container.Verify();
+        //    DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(container));
+        //}
     }
 }

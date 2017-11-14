@@ -1,4 +1,4 @@
-﻿$(document) //TODO dodać spiner albo coś bo przy bardzo dużych zdjęciach mocno zamula
+﻿$(document)
     .ajaxStart(function () {
         window.showLoading({ allowHide: true });
     })
@@ -32,6 +32,10 @@ function CallControllerAndRefreshImg(url, data) {
         processData: false,
         success: function (base64) {
             $('#img').attr('src', 'data:image/png;base64,' + base64);
+            var currentHeight = $('#img').height;
+            var currentWidth = $('#img').width;
+            $('#currentHeight').val(currentHeight);
+            $('#currentWidth').val(currentWidth);
         },
         error: function (xhr, ajaxOptions, thrownError) {
             alert(xhr.status);
@@ -62,5 +66,26 @@ $('#grayscale').click(function () {
 
 $('#brightness').on("change", function () {
     var value = $(this).val();
-    CallControllerAndRefreshImg('/DIP/SetBrightness?brightness='+value, null);
+    CallControllerAndRefreshImg('/DIP/SetBrightness?brightness=' + value, null);
+});
+
+$('#filter').change(function () {
+    var value = $(this).val();
+    CallControllerAndRefreshImg('/DIP/SetColorFilter?colorFilter=' + value, null);
+});
+
+$('#contrast').on("change", function () {
+    var value = $(this).val();
+    CallControllerAndRefreshImg('/DIP/SetContrast?contrast=' + value, null);
+});
+
+$('.rotate').click(function () {
+    var value = $(this).attr("id");
+    CallControllerAndRefreshImg('/DIP/RotateFlip?rotateFlip=' + value, null);
+});
+
+$('#resizeButton').click(function () {
+    var width = $('#width').val();
+    var height = $('#height').val();
+    CallControllerAndRefreshImg('/DIP/Resize?newWidth=' + width + '&newHeight=' + height, null);
 });

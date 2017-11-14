@@ -3,6 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Web.Mvc;
+using DIProject.Models;
 using DIProject.Services;
 
 namespace DIProject.Controllers
@@ -10,12 +11,7 @@ namespace DIProject.Controllers
     public class DIPController : Controller
     {
         private static Image _image;
-        private ImageProcessingService _imageProcessing;
-
-        public DIPController(ImageProcessingService imageProcessing)
-        {
-            _imageProcessing = imageProcessing;
-        }
+        private ImageProcessingService _imageProcessing = new ImageProcessingService();
 
         [HttpGet]
         public ActionResult Index()
@@ -56,6 +52,40 @@ namespace DIProject.Controllers
         public ActionResult SetBrightness(int brightness)
         {
             return ReturnBitmap(ImageProcessingService.SetBrightness((Bitmap)_image, brightness), false);
+        }
+
+        [HttpPost]
+        public ActionResult SetColorFilter(string colorFilter)
+        {
+            ColorFilterTypes colorFilterType;
+            Enum.TryParse(colorFilter, true, out colorFilterType);
+            return colorFilterType == ColorFilterTypes.None ? Content(ImageBytesToBase64(ImageToByteArray(_image))) : ReturnBitmap(ImageProcessingService.SetColorFilter((Bitmap)_image, colorFilterType), false);
+        }
+
+        [HttpPost]
+        public ActionResult SetGamma(double red, double green, double blue)
+        {
+            return ReturnBitmap(ImageProcessingService.SetGamma((Bitmap)_image, red, green, blue), false);
+        }
+
+        [HttpPost]
+        public ActionResult SetContrast(int contrast)
+        {
+            return ReturnBitmap(ImageProcessingService.SetContrast((Bitmap)_image, Convert.ToDouble(contrast)), false);
+        }
+
+        [HttpPost]
+        public ActionResult Resize(int newWidth, int newHeight)
+        {
+            return ReturnBitmap(ImageProcessingService.Resize((Bitmap)_image, newWidth, newHeight), false);
+        }
+
+        [HttpPost]
+        public ActionResult RotateFlip(string rotateFlip)
+        {
+            RotateFlipType rotateFlipType;
+            Enum.TryParse(rotateFlip, true, out rotateFlipType);
+            return ReturnBitmap(ImageProcessingService.RotateFlip((Bitmap)_image, rotateFlipType), false);
         }
 
         private ContentResult ReturnBitmap(Image bitmap, bool overrideCurrentImage)
