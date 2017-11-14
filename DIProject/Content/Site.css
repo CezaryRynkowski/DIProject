@@ -1,5 +1,4 @@
 ﻿body {
-    padding-top: 50px;
     padding-bottom: 20px;
 }
 
@@ -23,8 +22,8 @@ textarea {
     max-width: 280px;
 }
 
-.imageHolder {
-    background-color: gray;
+.imageHolder tools {
+    background-color: whitesmoke;
     margin-top: 10px;
 }
 
