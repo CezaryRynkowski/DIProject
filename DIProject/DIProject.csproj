@@ -146,7 +146,6 @@
     <Compile Include="Models\ColorFilterTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ImageProcessingService.cs" />
-    <Compile Include="Services\ImageService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Scripts\app.js" />
@@ -165,13 +164,11 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\DIP\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

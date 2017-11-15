@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace DIProject.Models
+﻿namespace DIProject.Models
 {
     public enum ColorFilterTypes
     {
@@ -11,5 +6,5 @@ namespace DIProject.Models
         Red,
         Green,
         Blue
-    };
+    }
 }

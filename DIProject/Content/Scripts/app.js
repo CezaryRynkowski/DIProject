@@ -24,7 +24,6 @@ function timer() {
     t = setTimeout(add, 1);
 }
 
-
 $(document)
     .ajaxStart(function () {
         h1.textContent = "00:00:00.000";
@@ -37,8 +36,15 @@ $(document)
         window.hideLoading();
     });
 
+$(document).ready(function() {
+    const type = $('#type').val();
+    if (type !== "setpixels") {
+        $('#filter').prop("disabled", true);
+    }
+});
+
 function CallControllerAndRefreshImg(urlRest, data) {
-    var url = '';
+    var url = "";
     var type = $('#type').val();
     if (type == 'setpixels') {
         url = '/DIP';

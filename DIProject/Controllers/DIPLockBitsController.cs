@@ -10,7 +10,6 @@ namespace DIProject.Controllers
     public class DIPLockBitsController : Controller
     {
         private static Image _image;
-        private ImageProcessingWithBitLocksService _imageProcessingWithBitLocksService = new ImageProcessingWithBitLocksService();
 
         [HttpGet]
         public ActionResult Index()
