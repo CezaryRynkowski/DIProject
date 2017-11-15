@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.IO;
 using System.Net;
 using System.Web.Mvc;
 using DIProject.Helpers;
@@ -12,7 +11,6 @@ namespace DIProject.Controllers
     public class DIPController : Controller
     {
         private static Image _image;
-        private ImageProcessingService _imageProcessing = new ImageProcessingService();
 
         [HttpGet]
         public ActionResult Index()

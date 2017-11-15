@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using DIProject.Models;
 
 namespace DIProject.Services
 {
-    public class ImageProcessingService
+    public static class ImageProcessingService
     {
         public static Bitmap Invert(Bitmap image)
         {
@@ -41,15 +40,14 @@ namespace DIProject.Services
             var tempImage = image;
             if (brightness < -255) brightness = -255;
             if (brightness > 255) brightness = 255;
-            Color c;
-            for (int i = 0; i < tempImage.Width; i++)
+            for (var i = 0; i < tempImage.Width; i++)
             {
-                for (int j = 0; j < tempImage.Height; j++)
+                for (var j = 0; j < tempImage.Height; j++)
                 {
-                    c = tempImage.GetPixel(i, j);
-                    int cR = c.R + brightness;
-                    int cG = c.G + brightness;
-                    int cB = c.B + brightness;
+                    var c = tempImage.GetPixel(i, j);
+                    var cR = c.R + brightness;
+                    var cG = c.G + brightness;
+                    var cB = c.B + brightness;
 
                     if (cR < 0) cR = 1;
                     if (cR > 255) cR = 255;
@@ -69,32 +67,31 @@ namespace DIProject.Services
         public static Bitmap SetColorFilter(Bitmap image, ColorFilterTypes colorFilterType)
         {
             var tempImage = image;
-            Color c;
-            for (int i = 0; i < tempImage.Width; i++)
+            for (var i = 0; i < tempImage.Width; i++)
             {
-                for (int j = 0; j < tempImage.Height; j++)
+                for (var j = 0; j < tempImage.Height; j++)
                 {
-                    c = tempImage.GetPixel(i, j);
-                    int nPixelR = 0;
-                    int nPixelG = 0;
-                    int nPixelB = 0;
-                    if (colorFilterType == ColorFilterTypes.Red)
+                    var c = tempImage.GetPixel(i, j);
+                    var nPixelR = 0;
+                    var nPixelG = 0;
+                    var nPixelB = 0;
+                    switch (colorFilterType)
                     {
-                        nPixelR = c.R;
-                        nPixelG = c.G - 255;
-                        nPixelB = c.B - 255;
-                    }
-                    else if (colorFilterType == ColorFilterTypes.Green)
-                    {
-                        nPixelR = c.R - 255;
-                        nPixelG = c.G;
-                        nPixelB = c.B - 255;
-                    }
-                    else if (colorFilterType == ColorFilterTypes.Blue)
-                    {
-                        nPixelR = c.R - 255;
-                        nPixelG = c.G - 255;
-                        nPixelB = c.B;
+                        case ColorFilterTypes.Red:
+                            nPixelR = c.R;
+                            nPixelG = c.G - 255;
+                            nPixelB = c.B - 255;
+                            break;
+                        case ColorFilterTypes.Green:
+                            nPixelR = c.R - 255;
+                            nPixelG = c.G;
+                            nPixelB = c.B - 255;
+                            break;
+                        case ColorFilterTypes.Blue:
+                            nPixelR = c.R - 255;
+                            nPixelG = c.G - 255;
+                            nPixelB = c.B;
+                            break;
                     }
 
                     nPixelR = Math.Max(nPixelR, 0);
@@ -119,13 +116,12 @@ namespace DIProject.Services
             if (contrast > 100) contrast = 100;
             contrast = (100.0 + contrast) / 100.0;
             contrast *= contrast;
-            Color c;
-            for (int i = 0; i < tempImage.Width; i++)
+            for (var i = 0; i < tempImage.Width; i++)
             {
-                for (int j = 0; j < tempImage.Height; j++)
+                for (var j = 0; j < tempImage.Height; j++)
                 {
-                    c = tempImage.GetPixel(i, j);
-                    double pR = c.R / 255.0;
+                    var c = tempImage.GetPixel(i, j);
+                    var pR = c.R / 255.0;
                     pR -= 0.5;
                     pR *= contrast;
                     pR += 0.5;
@@ -133,7 +129,7 @@ namespace DIProject.Services
                     if (pR < 0) pR = 0;
                     if (pR > 255) pR = 255;
 
-                    double pG = c.G / 255.0;
+                    var pG = c.G / 255.0;
                     pG -= 0.5;
                     pG *= contrast;
                     pG += 0.5;
@@ -141,7 +137,7 @@ namespace DIProject.Services
                     if (pG < 0) pG = 0;
                     if (pG > 255) pG = 255;
 
-                    double pB = c.B / 255.0;
+                    var pB = c.B / 255.0;
                     pB -= 0.5;
                     pB *= contrast;
                     pB += 0.5;
@@ -159,21 +155,21 @@ namespace DIProject.Services
         {
             if (newWidth != 0 && newHeight != 0)
             {
-                Bitmap temp = (Bitmap)image;
-                Bitmap bmap = new Bitmap(newWidth, newHeight, temp.PixelFormat);
+                var temp = image;
+                var bmap = new Bitmap(newWidth, newHeight, temp.PixelFormat);
 
-                double nWidthFactor = (double)temp.Width / (double)newWidth;
-                double nHeightFactor = (double)temp.Height / (double)newHeight;
+                var nWidthFactor = (double)temp.Width / newWidth;
+                var nHeightFactor = (double)temp.Height / newHeight;
 
                 double fx, fy, nx, ny;
                 int cx, cy, fr_x, fr_y;
-                Color color1 = new Color();
-                Color color2 = new Color();
-                Color color3 = new Color();
-                Color color4 = new Color();
                 byte nRed, nGreen, nBlue;
-
                 byte bp1, bp2;
+
+                var color1 = new Color();
+                var color2 = new Color();
+                var color3 = new Color();
+                var color4 = new Color();
 
                 for (int x = 0; x < bmap.Width; ++x)
                 {
@@ -198,26 +194,20 @@ namespace DIProject.Services
 
                         // Blue
                         bp1 = (byte)(nx * color1.B + fx * color2.B);
-
                         bp2 = (byte)(nx * color3.B + fx * color4.B);
-
-                        nBlue = (byte)(ny * (double)(bp1) + fy * (double)(bp2));
+                        nBlue = (byte)(ny * bp1 + fy * bp2);
 
                         // Green
                         bp1 = (byte)(nx * color1.G + fx * color2.G);
-
                         bp2 = (byte)(nx * color3.G + fx * color4.G);
-
-                        nGreen = (byte)(ny * (double)(bp1) + fy * (double)(bp2));
+                        nGreen = (byte)(ny * bp1 + fy * bp2);
 
                         // Red
                         bp1 = (byte)(nx * color1.R + fx * color2.R);
-
                         bp2 = (byte)(nx * color3.R + fx * color4.R);
+                        nRed = (byte)(ny * bp1 + fy * bp2);
 
-                        nRed = (byte)(ny * (double)(bp1) + fy * (double)(bp2));
-
-                        bmap.SetPixel(x, y, System.Drawing.Color.FromArgb(255, nRed, nGreen, nBlue));
+                        bmap.SetPixel(x, y, Color.FromArgb(255, nRed, nGreen, nBlue));
                     }
                 }
                 return bmap;
