@@ -37,6 +37,13 @@ $(document)
         window.hideLoading();
     });
 
+$(document).ready(function() {
+    var type = $('#type').val();
+    if (type != "setpixels") {
+        $('#filter').prop("disabled", true);
+    }
+});
+
 function CallControllerAndRefreshImg(urlRest, data) {
     var url = '';
     var type = $('#type').val();
