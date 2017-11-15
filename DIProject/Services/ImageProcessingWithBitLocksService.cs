@@ -57,9 +57,10 @@ namespace DIProject.Controllers
 
             for (var i = 0; i < rgbValues.Length; i += 3)
             {
-                var gray = (byte)(rgbValues[i] * .21 + rgbValues[i + 1] * .71 + rgbValues[i + 2] * .071);
+                var gray = (byte)(rgbValues[i] * .299 + rgbValues[i + 1] * .587 + rgbValues[i + 2] * .114);
                 rgbValues[i] = rgbValues[i + 1] = rgbValues[i + 2] = gray;
             }
+
             Marshal.Copy(rgbValues, 0, ptr, bytes);
             image.UnlockBits(bmpData);
 
@@ -136,42 +137,6 @@ namespace DIProject.Controllers
             Attributes.Dispose();
             NewGraphics.Dispose();
             return NewBitmap;
-        }
-
-        public static Image SetGamma(Bitmap image, double brightness, double c = 1d)
-        {
-            brightness = brightness / 100.0;
-            var width = image.Width;
-            var height = image.Height;
-            var srcData = image.LockBits(new Rectangle(0, 0, width, height),
-                ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-            var bytes = srcData.Stride * srcData.Height;
-            var buffer = new byte[bytes];
-            var result = new byte[bytes];
-            Marshal.Copy(srcData.Scan0, buffer, 0, bytes);
-            image.UnlockBits(srcData);
-            var current = 0;
-            var cChannels = 3;
-            for (var y = 0; y < height; y++)
-            {
-                for (var x = 0; x < width; x++)
-                {
-                    current = y * srcData.Stride + x * 4;
-                    for (var i = 0; i < cChannels; i++)
-                    {
-                        var range = (double)buffer[current + i] / 255;
-                        var correction = c * Math.Pow(range, brightness);
-                        result[current + i] = (byte)(correction * 255);
-                    }
-                    result[current + 3] = 255;
-                }
-            }
-            var resImg = new Bitmap(width, height);
-            var resData = resImg.LockBits(new Rectangle(0, 0, width, height),
-                ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-            Marshal.Copy(result, 0, resData.Scan0, bytes);
-            resImg.UnlockBits(resData);
-            return resImg;
         }
     }
 }
