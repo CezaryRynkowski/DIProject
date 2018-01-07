@@ -38,31 +38,31 @@ namespace DIProject.Controllers
         [HttpPost]
         public ActionResult Invert()
         {
-            return ReturnBitmap(ImageProcessingWithBitLocksService.Invert((Bitmap)_image), false);
+            return ReturnBitmap(ImageProcessingWithBitLocksService.Invert((Bitmap)_image));
         }
 
         [HttpPost]
         public ActionResult SetGrayscale()
         {
-            return ReturnBitmap(ImageProcessingWithBitLocksService.SetGrayscale((Bitmap)_image), false);
+            return ReturnBitmap(ImageProcessingWithBitLocksService.SetGrayscale((Bitmap)_image));
         }
 
         [HttpPost]
         public ActionResult SetBrightness(int brightness)
         {
-            return ReturnBitmap(ImageProcessingWithBitLocksService.SetBrightness((Bitmap)_image, brightness), false);
+            return ReturnBitmap(ImageProcessingWithBitLocksService.SetBrightness((Bitmap)_image, brightness));
         }
 
         [HttpPost]
         public ActionResult SetContrast(int contrast)
         {
-            return ReturnBitmap(ImageProcessingWithBitLocksService.SetContrast((Bitmap)_image, Convert.ToDouble(contrast)), false);
+            return ReturnBitmap(ImageProcessingWithBitLocksService.SetContrast((Bitmap)_image, Convert.ToDouble(contrast)));
         }
 
         [HttpPost]
         public ActionResult Resize(int newWidth, int newHeight)
         {
-            return ReturnBitmap(ImageProcessingWithBitLocksService.Resize((Bitmap)_image, newWidth, newHeight), false);
+            return ReturnBitmap(ImageProcessingWithBitLocksService.Resize((Bitmap)_image, newWidth, newHeight));
         }
 
         [HttpPost]
@@ -70,10 +70,22 @@ namespace DIProject.Controllers
         {
             RotateFlipType rotateFlipType;
             Enum.TryParse(rotateFlip, true, out rotateFlipType);
-            return ReturnBitmap(ImageProcessingService.RotateFlip((Bitmap)_image, rotateFlipType), false);
+            return ReturnBitmap(ImageProcessingService.RotateFlip((Bitmap)_image, rotateFlipType));
         }
 
-        private ContentResult ReturnBitmap(Image bitmap, bool overrideCurrentImage)
+        [HttpPost]
+        public ActionResult EdgeDetection()
+        {
+            return ReturnBitmap(ImageProcessingWithBitLocksService.EdgeDetection((Bitmap) _image));
+        }
+
+        [HttpPost]
+        public ActionResult GaussianBlur()
+        {
+            return ReturnBitmap(ImageProcessingWithBitLocksService.GaussianBlur((Bitmap) _image));
+        }
+
+        private ContentResult ReturnBitmap(Image bitmap, bool overrideCurrentImage = true)
         {
             if (overrideCurrentImage)
                 _image = bitmap;

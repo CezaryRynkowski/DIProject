@@ -30,3 +30,8 @@ textarea {
 #img {
     padding: 10px;
 }
+
+#currentHeight {
+    display: flex;
+    align-items: center
+}
