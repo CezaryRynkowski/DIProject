@@ -110,6 +110,22 @@ $('#grayscale').click(function () {
     CallControllerAndRefreshImg('/SetGrayscale', null);
 });
 
+$('#edges').click(function () {
+    CallControllerAndRefreshImg('/EdgeDetection', null);
+});
+
+$('#blur').click(function () {
+    CallControllerAndRefreshImg('/GaussianBlur', null);
+});
+
+$('#flip').click(function () {
+    CallControllerAndRefreshImg('/HorizontalFlip', null);
+});
+
+$('#hist').click(function () {
+    CallControllerAndRefreshImg('/HistEq', null);
+});
+
 $('#brightness').on("change", function () {
     var value = $(this).val();
     CallControllerAndRefreshImg('/SetBrightness?brightness=' + value, null);

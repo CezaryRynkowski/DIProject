@@ -50,13 +50,13 @@ namespace DIProject.Controllers
         [HttpPost]
         public ActionResult SetBrightness(int brightness)
         {
-            return ReturnBitmap(ImageProcessingWithBitLocksService.SetBrightness((Bitmap)_image, brightness));
+            return ReturnBitmap(ImageProcessingWithBitLocksService.SetBrightness((Bitmap)_image, brightness),false);
         }
 
         [HttpPost]
         public ActionResult SetContrast(int contrast)
         {
-            return ReturnBitmap(ImageProcessingWithBitLocksService.SetContrast((Bitmap)_image, Convert.ToDouble(contrast)));
+            return ReturnBitmap(ImageProcessingWithBitLocksService.SetContrast((Bitmap)_image, Convert.ToDouble(contrast)),false);
         }
 
         [HttpPost]
@@ -74,15 +74,26 @@ namespace DIProject.Controllers
         }
 
         [HttpPost]
+        public ActionResult HorizontalFlip()
+        {
+            return ReturnBitmap(ImageProcessingWithBitLocksService.HorizontalFlip((Bitmap)_image));
+        }
+
+        [HttpPost]
         public ActionResult EdgeDetection()
         {
-            return ReturnBitmap(ImageProcessingWithBitLocksService.EdgeDetection((Bitmap) _image));
+            return ReturnBitmap(ImageProcessingWithBitLocksService.EdgeDetection((Bitmap)_image));
         }
 
         [HttpPost]
         public ActionResult GaussianBlur()
         {
-            return ReturnBitmap(ImageProcessingWithBitLocksService.GaussianBlur((Bitmap) _image));
+            return ReturnBitmap(ImageProcessingWithBitLocksService.GaussianBlur((Bitmap)_image));
+        }
+
+        public ActionResult HistEq()
+        {
+            return ReturnBitmap(ImageProcessingWithBitLocksService.HistEq((Bitmap)_image));
         }
 
         private ContentResult ReturnBitmap(Image bitmap, bool overrideCurrentImage = true)

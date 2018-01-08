@@ -217,8 +217,16 @@ namespace DIProject.Services
 
         public static Bitmap RotateFlip(Bitmap image, RotateFlipType rotateFlipType)
         {
-            image.RotateFlip(rotateFlipType);
-            return image;
+            try
+            {
+                image.RotateFlip(rotateFlipType);
+                return image;
+            }
+            catch (Exception)
+            {
+                //TODO
+                return image;
+            }
         }
     }
 }
