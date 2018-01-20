@@ -11,23 +11,26 @@
 
 <div class="imageHolder">
     <img id="img" alt="Nie wybrano pliku" />
+    <hr/>
+    <br/>
+
+    <label for="currentHeight">Wysokość</label>
+    <p id="currentHeight">-</p>
+    <label for="currentWidth">Szerokość</label>
+    <p id="currentWidth">-</p>
 </div>
 <hr />
 
 <div class="tools">
     <input type="button" name="invert" id="invert" value="Odwróć kolory" />
     <input type="button" name="grayscale" id="grayscale" value="Skala szarości" />
+    <input type="button" name="edges" id="edges" value="Wykryj krawędzie" />
+    <input type="button" name="blur" id="blur" value="Rozmycie gaussowskie" />
+    <input type="button" name="hist" id="hist" value="Wyrównanie histogramu" />
     <br />
     <label for="brightness">Jasność</label>
     <input type="range" name="brightness" id="brightness" min="-255" max="255" step="15" />
 
-    <label for="filter">Filtr</label>
-    <select name="filter" id="filter">
-        <option value="None">Brak</option>
-        <option value="Red">Czerwony</option>
-        <option value="Green">Zielony</option>
-        <option value="Blue">Niebieski</option>
-    </select>
     <br />
     <label for="contrast">Kontrast</label>
     <input type="range" name="contrast" id="contrast" min="-100" max="100" step="10" />
@@ -35,10 +38,10 @@
     <button id="Rotate90FlipNone" class="rotate">Obrót w prawo</button>
     <button id="Rotate270FlipNone" class="rotate">Obrót w lewo</button>
     <button id="Rotate180FlipNone" class="rotate">Obrót o 180 stopni</button>
+    <button id="flip" class="rotate">Odbicie lustrzane</button>
 
     <div name="resize">
-        <p id="currentHeight"></p>
-        <p id="currentWidth"></p>
+
 
         <input type="number" min="1" name="width" id="width" placeholder="szerokość" />
         <input type="number" min="1" name="height" id="height" placeholder="wysokość" />

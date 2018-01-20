@@ -16,7 +16,7 @@ function add() {
             }
         }
     }
-    h1.textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds) + "." + (miliseconds>9? miliseconds :"0" + miliseconds);
+    h1.textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds) + "." + (miliseconds > 9 ? miliseconds : "0" + miliseconds);
     timer();
 }
 
@@ -36,7 +36,7 @@ $(document)
         window.hideLoading();
     });
 
-$(document).ready(function() {
+$(document).ready(function () {
     const type = $('#type').val();
     if (type !== "setpixels") {
         $('#filter').prop("disabled", true);
@@ -76,10 +76,12 @@ function CallControllerAndRefreshImg(urlRest, data) {
         processData: false,
         success: function (base64) {
             $('#img').attr('src', 'data:image/png;base64,' + base64);
-            var currentHeight = $('#img').height;
-            var currentWidth = $('#img').width;
-            $('#currentHeight').val(currentHeight);
-            $('#currentWidth').val(currentWidth);
+            setTimeout(function () {
+                var currentHeight = $('#img')[0].height;
+                var currentWidth = $('#img')[0].width;
+                $('#currentHeight').text(currentHeight);
+                $('#currentWidth').text(currentWidth);
+            }, 500);
         },
         error: function (xhr, ajaxOptions, thrownError) {
             alert(xhr.status);
@@ -106,6 +108,22 @@ $('#invert').click(function () {
 
 $('#grayscale').click(function () {
     CallControllerAndRefreshImg('/SetGrayscale', null);
+});
+
+$('#edges').click(function () {
+    CallControllerAndRefreshImg('/EdgeDetection', null);
+});
+
+$('#blur').click(function () {
+    CallControllerAndRefreshImg('/GaussianBlur', null);
+});
+
+$('#flip').click(function () {
+    CallControllerAndRefreshImg('/HorizontalFlip', null);
+});
+
+$('#hist').click(function () {
+    CallControllerAndRefreshImg('/HistEq', null);
 });
 
 $('#brightness').on("change", function () {
